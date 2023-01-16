@@ -1,0 +1,35 @@
+; myFibo.S
+
+global my_fibo ; global symbol
+extern test
+    section .text ; indicate where to store this
+
+my_fibo:
+    if:
+        cmp rdi, 1
+        jle else
+        mov r8, 0
+        mov r9, 1
+        mov r10, 2
+        jmp loop
+    else:
+        mov rax, rdi
+        ret
+
+loop:
+    cmp r10, rdi
+    jge return
+    inc r10
+    cmp r8, r9
+    jle addr8
+    add r9, r8
+    jmp loop
+
+addr8:
+    add r8, r9
+    jmp loop
+
+return:
+    add r8, r9
+    mov rax, r8
+    ret
