@@ -4,7 +4,18 @@ global my_getrip ; global symbol
 extern test
     section .text ; indicate where to store this
 
-my_getrip:
-    push rdi
+test:
     pop rax
+
+footer:
+    add rsp, 28h
+    pop rbp
     ret
+
+my_getrip:
+    ; Header:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 28h
+    ; Code:
+    call test

@@ -4,21 +4,22 @@ global my_mulhello ; global symbol
 extern puts ; not define in this file (same as C)
 extern test
     section .text ; indicate where to store this
-    
+
 footer:
     add rsp, 28h
     pop rbp
     ret
 
 my_mulhello:
-    ; Header :
+    ; Header:
     push rbp
     mov rbp, rsp
     sub rsp, 28h
-    ; Code :
+    ; Code:
     mov rax, rdi
     mov r8, rdi
     test r8, r8 ; test r8&r8 so returns 0 only if r8 is 0
+    ; Footer:
     jz footer
     jmp loop
     
@@ -28,6 +29,7 @@ loop:
     dec r8
     mov rax, r8
     jnz loop
+    ; Footer:
     jmp footer
 
 section .rodata

@@ -19,6 +19,7 @@ OBJ = $(SRCDIR)/main.o \
 		$(SRCDIR)/myMulhello.o \
 		$(SRCDIR)/myFibo.o \
 		$(SRCDIR)/myGetrip.o \
+		$(SRCDIR)/myHello2.o \
 
 all: main
 

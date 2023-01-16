@@ -17,6 +17,7 @@ int my_testu(unsigned int n1, unsigned int n2);
 void my_mulhello(unsigned long long n);
 long long my_fibo(long long n);
 long long my_getrip();
+void my_hello2();
 
 int main(int argc, char **argv)
 {
@@ -51,6 +52,9 @@ int main(int argc, char **argv)
     printf("my_fibo(1) = %lld\n", my_fibo(1));
     printf("my_fibo(2) = %lld\n", my_fibo(2));
     printf("my_fibo(8) = %lld\n", my_fibo(8));
+    printf("my_getrip() = 0x%X\n", my_fibo(8));
+    printf("my_hello2():\n");
+    my_hello2();
     
     return 0;
 }
