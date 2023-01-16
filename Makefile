@@ -1,5 +1,5 @@
 CC = gcc
-COMPILFLAGS = -no-pie -z noexecstack
+COMPILFLAGS = -z noexecstack
 SRCDIR = .
 OBJ = $(SRCDIR)/main.o \
 		$(SRCDIR)/myHello.o \
@@ -20,6 +20,7 @@ OBJ = $(SRCDIR)/main.o \
 		$(SRCDIR)/myFibo.o \
 		$(SRCDIR)/myGetrip.o \
 		$(SRCDIR)/myHello2.o \
+		$(SRCDIR)/myReadWrite.o \
 
 all: main
 

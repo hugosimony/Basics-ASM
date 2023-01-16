@@ -18,9 +18,13 @@ void my_mulhello(unsigned long long n);
 long long my_fibo(long long n);
 long long my_getrip();
 void my_hello2();
+void my_readwrite(char *filename);
 
 int main(int argc, char **argv)
 {
+    // Run your tests here
+    
+    /*
     printf("my_hello():\n");
     my_hello();
     printf("my_add(3, 6) = %lld\n", my_add(3, 6));
@@ -55,6 +59,10 @@ int main(int argc, char **argv)
     printf("my_getrip() = 0x%X\n", my_fibo(8));
     printf("my_hello2():\n");
     my_hello2();
+    printf("my_readwrite(\"Makefile\"):\n");
+    my_readwrite("Makefile");
+    */
     
+
     return 0;
 }

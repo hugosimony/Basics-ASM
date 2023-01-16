@@ -16,8 +16,8 @@ my_hello2:
     sub rsp, 28h
     ; Code:
     mov rdi, 1
-    mov rsi, message
-    mov rdx, message_len
+    lea rsi, [rel msg]
+    mov rdx, msg_len
     mov rax, 1
     syscall
     ; Footer:
@@ -25,6 +25,6 @@ my_hello2:
 
 section .rodata
 
-message:
-    db 'Hello world!', 0
-message_len: equ $-message
+msg:
+    db 'Hello world!', 10, 0
+msg_len: equ $-msg

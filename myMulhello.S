@@ -24,8 +24,8 @@ my_mulhello:
     jmp loop
     
 loop:
-    mov rdi, message
-    call puts
+    lea rdi, [rel message]
+    call puts wrt ..plt
     dec r8
     mov rax, r8
     jnz loop

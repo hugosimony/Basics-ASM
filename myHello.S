@@ -7,8 +7,8 @@ extern test
 
 my_hello:
     push rax
-    mov rdi, message
-    call puts
+    lea rdi, [rel message]
+    call puts wrt ..plt
     pop rax
     ret
 
