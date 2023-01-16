@@ -14,7 +14,7 @@ long long my_factorial(long long n);
 long long my_mov(long long n);
 int my_test(int n1, int n2);
 int my_testu(unsigned int n1, unsigned int n2);
-void my_mulhello(int n);
+void my_mulhello(unsigned long long n);
 long long my_fibo(long long n);
 long long my_getrip();
 

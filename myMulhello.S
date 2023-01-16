@@ -4,18 +4,33 @@ global my_mulhello ; global symbol
 extern puts ; not define in this file (same as C)
 extern test
     section .text ; indicate where to store this
+    
+footer:
+    add rsp, 28h
+    pop rbp
+    ret
 
 my_mulhello:
+    ; Header :
+    push rbp
+    mov rbp, rsp
+    sub rsp, 28h
+    ; Code :
     mov rax, rdi
-    mov rdi, message
+    mov r8, rdi
+    test r8, r8 ; test r8&r8 so returns 0 only if r8 is 0
+    jz footer
     jmp loop
     
 loop:
+    mov rdi, message
     call puts
-    dec rax
+    dec r8
     mov rax, r8
     jnz loop
-    ret
+    jmp footer
+
+section .rodata
 
 message:
     db 'Hello', 0

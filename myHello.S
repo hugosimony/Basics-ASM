@@ -12,5 +12,7 @@ my_hello:
     pop rax
     ret
 
+section .rodata
+
 message:
     db 'Hello world!', 0
