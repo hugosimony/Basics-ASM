@@ -4,16 +4,22 @@ global fibonnaci ; global symbol
 section .text ; indicate where to store this
 
 fibonnaci:
-    if:
-        cmp rdi, 1
-        jle else
-        mov r8, 0
-        mov r9, 1
-        mov r10, 2
-        jmp loop
-    else:
-        mov rax, rdi
-        ret
+    cmp rdi, 1
+    jle check_negative
+    mov r8, 0
+    mov r9, 1
+    mov r10, 2
+    jmp loop
+
+check_negative:
+    cmp rdi, 0
+    jl negative
+    mov rax, rdi
+    ret
+
+negative:
+    mov rax, -1
+    ret
 
 loop:
     cmp r10, rdi
