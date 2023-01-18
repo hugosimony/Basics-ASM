@@ -1,5 +1,15 @@
 ; myfilexor.S
 
+section .data
+    filepath db 0
+    key db 0
+    buffer db 0
+
+
+section .bss
+    fileSize resq 1
+    bufferSize resq 1
+
 global myfilexor ; global symbol
 section .text ; indicate where to store this
 
@@ -7,49 +17,60 @@ myfilexor:
     push rbp
     mov rbp, rsp
 
-    ; get filepath and key
-    mov rsp, [rbp+8]
-    mov cl, byte [rbp+12]
+    ; Store filepath and key arguments in local variables
+    mov [filepath], rdi
+    mov [key], rsi
 
-    ; open the file
-    push 0          ; O_RDONLY flag
-    push rsp        ; filepath
-    call open
-    add rsp, 8
-    mov rdx, rax    ; save the file descriptor
+    ; Open file
+    mov rax, 2
+    mov rdi, [filepath]
+    mov rsi, 0
+    syscall
 
-    ; get the file size
-    mov rax, rdx
-    call lseek
-    mov rcx, rax    ; save the file size
+    ; Store file descriptor in rax
+    mov [fileDescriptor], rax
 
-    ; allocate memory for the file content
-    push rcx        ; size
-    call malloc
-    add rsp, 4
-    mov rdi, rax    ; save the allocated memory pointer
+    ; Get file size
+    mov rax, 8
+    mov rdi, [fileDescriptor]
+    syscall
+    mov [fileSize], rax
 
-    ; read the file content
-    mov rax, rdx    ; file descriptor
-    mov rsp, rdi    ; buffer
-    mov rcx, rcx    ; size
-    call read
+    ; Allocate buffer
+    mov rdi, [fileSize]
+    mov rax, 9
+    syscall
+    mov [buffer], rax
 
-    ; xor each byte of the file content with the key
-    xor_loop:
+    ; Read file into buffer
+    mov rax, 0
+    mov rdi, [fileDescriptor]
+    mov rsi, [buffer]
+    mov rdx, [fileSize]
+    syscall
+
+    ; XOR each byte of buffer with key
+    mov rdi, [buffer]
+    mov rsi, [key]
+    mov rcx, [fileSize]
+
+xor_loop:
     cmp rcx, 0
-    jz end_xor
-    xor byte [rsp], cl
-    inc rsp
+    je xor_done
+    xor byte [rdi], rsi
+    inc rdi
     dec rcx
     jmp xor_loop
 
-end_xor:
-    ; close the file
-    mov rax, rdx
-    call close
+xor_done:
 
-    ; return the allocated memory pointer
-    mov rax, rdi
+    ; Close file
+    mov rax, 3
+    mov rdi, [fileDescriptor]
+    syscall
+
+    ; Return buffer
+    mov rax, [buffer]
+
     pop rbp
     ret
