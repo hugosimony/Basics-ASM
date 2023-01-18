@@ -1,10 +1,14 @@
 ; myadd.S
 
 global myadd ; global symbol
-extern test
-    section .text ; indicate where to store this
+section .text ; indicate where to store this
 
 myadd:
+    push rbp
+    mov rbp, rsp
+
     add rdi, rsi
     mov rax, rdi
+    
+    pop rbp
     ret

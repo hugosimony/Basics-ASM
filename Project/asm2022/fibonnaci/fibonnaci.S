@@ -4,6 +4,9 @@ global fibonnaci ; global symbol
 section .text ; indicate where to store this
 
 fibonnaci:
+    push rbp
+    mov rbp, rsp
+
     cmp rdi, 1
     jle check_negative
     mov r8, 0
@@ -15,10 +18,12 @@ check_negative:
     cmp rdi, 0
     jl negative
     mov rax, rdi
+    pop rbp
     ret
 
 negative:
     mov rax, -1
+    pop rbp
     ret
 
 loop:
@@ -37,4 +42,6 @@ addr8:
 return:
     add r8, r9
     mov rax, r8
+
+    pop rbp
     ret

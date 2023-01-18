@@ -16,14 +16,14 @@ myitoa:
     jne positive
 
     ; handle negative numbers
+    mov r10, -1
     inc rdi
-    mov r8, 0
     mov cl, [rdi]
     jmp convert
 
 positive:
     ; handle positive numbers
-    mov r8, 0
+    mov r10, 1
 
 convert:
     ; start the loop
@@ -49,6 +49,7 @@ convert:
     jmp loop
 
 end:
+    imul r8, r10 ; for negative numbers
     mov rax, r8  ; move the final result to rax
     pop rbp
     ret

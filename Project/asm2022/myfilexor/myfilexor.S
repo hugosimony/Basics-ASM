@@ -4,52 +4,52 @@ global myfilexor ; global symbol
 section .text ; indicate where to store this
 
 myfilexor:
-    push ebp
-    mov ebp, esp
+    push rbp
+    mov rbp, rsp
 
     ; get filepath and key
-    mov ebx, [ebp+8]
-    mov cl, byte [ebp+12]
+    mov rsp, [rbp+8]
+    mov cl, byte [rbp+12]
 
     ; open the file
     push 0          ; O_RDONLY flag
-    push ebx        ; filepath
+    push rsp        ; filepath
     call open
-    add esp, 8
-    mov edx, eax    ; save the file descriptor
+    add rsp, 8
+    mov rdx, rax    ; save the file descriptor
 
     ; get the file size
-    mov eax, edx
+    mov rax, rdx
     call lseek
-    mov ecx, eax    ; save the file size
+    mov rcx, rax    ; save the file size
 
     ; allocate memory for the file content
-    push ecx        ; size
+    push rcx        ; size
     call malloc
-    add esp, 4
-    mov edi, eax    ; save the allocated memory pointer
+    add rsp, 4
+    mov rdi, rax    ; save the allocated memory pointer
 
     ; read the file content
-    mov eax, edx    ; file descriptor
-    mov ebx, edi    ; buffer
-    mov ecx, ecx    ; size
+    mov rax, rdx    ; file descriptor
+    mov rsp, rdi    ; buffer
+    mov rcx, rcx    ; size
     call read
 
     ; xor each byte of the file content with the key
     xor_loop:
-    cmp ecx, 0
+    cmp rcx, 0
     jz end_xor
-    xor byte [ebx], cl
-    inc ebx
-    dec ecx
+    xor byte [rsp], cl
+    inc rsp
+    dec rcx
     jmp xor_loop
 
 end_xor:
     ; close the file
-    mov eax, edx
+    mov rax, rdx
     call close
 
     ; return the allocated memory pointer
-    mov eax, edi
-    pop ebp
+    mov rax, rdi
+    pop rbp
     ret

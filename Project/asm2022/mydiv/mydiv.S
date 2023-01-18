@@ -4,34 +4,26 @@ global mydiv ; global symbol
 section .text ; indicate where to store this
 
 mydiv:
-    push ebp
-    mov ebp, esp
+    push rbp
+    mov rbp, rsp
 
-    ; get the two operands and the result struct
-    mov eax, [ebp+8]
-    mov edx, [ebp+12]
-    mov ebx, [ebp+16]
+    mov rcx, rdx
 
-    ; check if the divisor is 0
-    cmp edx, 0
-    jz div_by_zero
+    cmp rsi, 0        ; Compare divisor with 0
+    jz divide_by_zero ; Jump to divide_by_zero if the division is by zero
+    mov rax, rdi      ; Move the dividend into rax
+    xor rdx, rdx      ; Clear rdx
+    div rsi           ; Divide rax by rsi and store the result in rax and the remainder in rdx
 
-    ; perform the division
-    xor edx, edx
-    div edx
-
-    ; store the result and remainder in the resdiv struct
-    mov [ebx], eax
-    mov [ebx+8], edx
-
-    ; return 1 on success
-    mov eax, 1
+    mov [rcx], rax    ; Store the result of the division in res.res
+    mov [rcx+8], rdx  ; Store the remainder in res.rest
+    mov r8, 1         ; Move 1 in r8 to indicate success
     jmp end
 
-div_by_zero:
-    ; return 0 if a division by 0 has been detected
-    xor eax, eax
+divide_by_zero:
+    mov r8, 0         ; Move 0 in r8 to indicate division by zero
 
 end:
-    pop ebp
+    mov rax, r8       ; Move the success flag in rax
+    pop rbp
     ret
