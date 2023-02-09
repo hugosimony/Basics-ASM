@@ -22,6 +22,8 @@ mydiv:
 
 divide_by_zero:
     mov r8, 0         ; Move 0 in r8 to indicate division by zero
+    mov [rcx], r8     ; Set the results to 0
+    mov [rcx+8], r8   ; Set the results to 0
 
 end:
     mov rax, r8       ; Move the success flag in rax

@@ -1,76 +1,57 @@
 ; myfilexor.S
 
-section .data
-    filepath db 0
-    key db 0
-    buffer db 0
+extern open
+extern read
+extern close
 
-
-section .bss
-    fileSize resq 1
-    bufferSize resq 1
+extern puts
 
 global myfilexor ; global symbol
+
+%define BUFFER_SIZE 2048
+
 section .text ; indicate where to store this
 
+footer:
+    ; close file
+    call close    
+    ; finished
+    pop rbp
+    ret
+
 myfilexor:
+    ; Header:
     push rbp
     mov rbp, rsp
 
-    ; Store filepath and key arguments in local variables
-    mov [filepath], rdi
-    mov [key], rsi
-
-    ; Open file
-    mov rax, 2
-    mov rdi, [filepath]
+    ; Code:
+    mov r9, rsi
     mov rsi, 0
-    syscall
+    call open    
+    mov r8, rax
+    jmp myread
 
-    ; Store file descriptor in rax
-    mov [fileDescriptor], rax
+myread:
+    mov rdi, r8
+    lea rsi, [rel buffer]
+    mov rdx, BUFFER_SIZE
+    call read    
+    cmp rax, 0
+    jle footer
+    jmp write
 
-    ; Get file size
-    mov rax, 8
-    mov rdi, [fileDescriptor]
-    syscall
-    mov [fileSize], rax
+write:
+    lea rdi, [rel endline]    
+    call puts
+    ;lea rsi, [rel buffer]
+    ;xor r9b, sil
+    
+    ;mov [rax], r9b
+    ;inc rax
+    jmp myread
 
-    ; Allocate buffer
-    mov rdi, [fileSize]
-    mov rax, 9
-    syscall
-    mov [buffer], rax
-
-    ; Read file into buffer
-    mov rax, 0
-    mov rdi, [fileDescriptor]
-    mov rsi, [buffer]
-    mov rdx, [fileSize]
-    syscall
-
-    ; XOR each byte of buffer with key
-    mov rdi, [buffer]
-    mov rsi, [key]
-    mov rcx, [fileSize]
-
-xor_loop:
-    cmp rcx, 0
-    je xor_done
-    xor byte [rdi], rsi
-    inc rdi
-    dec rcx
-    jmp xor_loop
-
-xor_done:
-
-    ; Close file
-    mov rax, 3
-    mov rdi, [fileDescriptor]
-    syscall
-
-    ; Return buffer
-    mov rax, [buffer]
-
-    pop rbp
-    ret
+section .bss
+buffer resb BUFFER_SIZE
+section .rodata
+endline:
+    db 10, 0
