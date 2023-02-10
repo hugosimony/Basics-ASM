@@ -31,6 +31,13 @@ myfilexor/myfilexor:
 
 clean:
 	find . -iname '*.o' -delete
+	rm -f myadd/myadd
+	rm -f mymul/mymul
+	rm -f fibonnaci/fibonnaci
+	rm -f mydiv/mydiv
+	rm -f myitoa/myitoa
+	rm -f myorderlist/myorderlist
+	rm -f myfilexor/myfilexor
 
 distclean: clean
 	rm -f fibonnaci/fibonnaci

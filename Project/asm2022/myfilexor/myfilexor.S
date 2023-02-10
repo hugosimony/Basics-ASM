@@ -23,7 +23,8 @@ myfilexor:
     ; Header:
     push rbp
     mov rbp, rsp
-
+    jmp footer
+    
     ; Code:
     mov r9, rsi
     mov rsi, 0
